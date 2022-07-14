@@ -3,8 +3,8 @@ FROM alpine:edge
 # Install packages
 RUN apk add --update --no-cache python3 curl netcat-openbsd
 
-COPY entrypoint.sh /bin/entrypoint.sh
-WORKDIR /involved
+COPY /src/entrypoint.sh /bin/entrypoint.sh
+WORKDIR /src
 
 EXPOSE 8000
 

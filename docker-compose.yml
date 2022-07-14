@@ -12,7 +12,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgre123s
     healthcheck:
-      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
+      test: CMD pg_isready -qd postgres -U postgres
       timeout: 10s
       retries: 10
     volumes:
@@ -33,15 +33,7 @@ services:
       interval: 3s
       timeout: 10s
       retries: 5
+    volumes:
+      - ./src:/src
     ports:
     - 18080:8000
-
-# https://scoutapm.com/blog/how-to-use-docker-healthcheck
-
-# docker network create nc_network
-# networks:
-#   default:
-#     name: nc_network
-
-# networks:
-#   gateway: {}

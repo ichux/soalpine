@@ -1,0 +1,47 @@
+version: '3.7'
+
+volumes:
+  ipsql_pdata: {}
+
+services:
+  ipsql:
+    image: postgres:14.2
+    restart: always
+    container_name: nc_psql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgre123s
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
+      timeout: 10s
+      retries: 10
+    volumes:
+      - ipsql_pdata:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: nc_app
+    command: daemon
+    environment:
+      DB_NETWORK: ipsql
+    healthcheck:
+      test: CMD nc -z 127.0.0.1 8000 || exit 0
+      start_period: 10s
+      interval: 3s
+      timeout: 10s
+      retries: 5
+    ports:
+    - 18080:8000
+
+# https://scoutapm.com/blog/how-to-use-docker-healthcheck
+
+# docker network create nc_network
+# networks:
+#   default:
+#     name: nc_network
+
+# networks:
+#   gateway: {}

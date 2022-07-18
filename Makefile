@@ -18,7 +18,7 @@ build:
 .PHONY: log
 # help: log 				- Container logs
 log:
-	@docker logs --follow nc_app`
+	@docker logs --follow nc_app
 
 .PHONY: sh
 # help: sh 				- sh for the container
